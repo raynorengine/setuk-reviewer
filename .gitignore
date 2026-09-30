@@ -1,0 +1,22 @@
+# ── 규정 원문 · 개인정보. 절대 커밋하지 않는다 (CLAUDE.md 「데이터 취급」)
+data/*
+logs/
+*.pdf
+*.docx
+
+# 샘플만 예외. 완전히 새로 지어낸 문장 3~5건
+!data/samples/
+!data/samples/**
+
+# ── 파이썬
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+.ruff_cache/
+
+# ── 도구
+.chroma/
+.DS_Store
