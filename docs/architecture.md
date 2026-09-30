@@ -42,16 +42,16 @@
 | 폴더 | 무엇이 들어가나 | 색인 | 언제 만드나 |
 |---|---|---|---|
 | `data/regulations/` | 기재요령·길라잡이 인용본 md 23개. 원문 그대로 | `regulation` | 완료 (0-0) |
-| `data/domain/` | **교사 관습·암묵지·도메인 지식.** 증언, 현장 관찰, 추가 취재분 | `practice` (03 제외) | 0-1 |
-| `data/eval/` | 평가셋. 위반:정상 ≈ 1:1 | 안 함 | 2단계 |
-| `data/classification.md` | 조항 5종 분류표. 판정 프롬프트 만들 때 본다 | 안 함 | 0-2 |
-| `docs/` | 규칙·근거·전처리 내역 | 안 함 | — |
+| `data/domain/` | **교사 관습·암묵지·도메인 지식.** 증언, 현장 관찰, 추가 취재분 | `domain` | 완료 0-1 |
+| `data/eval/` | 평가셋. 위반:정상 ≈ 1:1 | — | 2단계 |
+| `data/classification.md` | 조항 5종 분류표. 판정 프롬프트 만들 때 본다 | — | 0-2 |
+| `docs/` | 규칙·근거·전처리 내역 | — | — |
 | `src/store/` | 문서를 자르고 저장하고 검색한다 | — | 1-a·1-b |
 | `src/reviewer/` | 문장을 받아 판정한다 | — | 1-c·1-d |
 | `src/generator/` | 활동 기록을 받아 초안을 만든다 | — | 3단계 |
 | `src/common/` | 공통 타입·로그 기록 | — | 1-a |
 | `tests/` | 단계별 완료 확인 | — | 각 단계와 함께 |
-| `logs/` | 검색·판정 기록 JSONL | 안 함 | 1-d |
+| `logs/` | 검색·판정 기록 JSONL | — | 1-d |
 
 **`data/`와 `logs/`는 통째로 저장소에 올라가지 않는다.** 규정 md는 원문 인용본이라 PDF와 배포권이 같고,
 나머지는 미성년자 정보와 취재원 정보가 들어간다.
@@ -79,12 +79,11 @@
 | 컬렉션 이름 | 원본 | 검색 결과에 붙는 구분 |
 |---|---|---|
 | `regulations` | `data/regulations/*.md` | `regulation` |
-| `practices` | `data/domain/*.md` (03 제외) | `practice` |
+| `domain` | `data/domain/*.md` (03 제외) | `domain` |
 | `standards` | 교육과정 성취기준 (6단계) | `standard` |
 
-`practices` 컬렉션의 원본은 `data/domain/` 하나다.
+`domain` 컬렉션의 원본은 `data/domain/` 하나다.
 교사 관습·암묵지·도메인 지식을 전부 여기 둔다. 추가 취재분도 여기 넣는다.
-컬렉션 이름과 폴더 이름이 다른 것은 design.md 용어(관습 규칙 = practice)를 따랐기 때문이다.
 
 **예외 1건** — `data/domain/03_학생실태_수준과성취도.md`는 넣지 않는다.
 학생의 PC 조작 능력이나 수업 태도는 세특 문장의 위반 여부를 가르는 근거가 아니다.
@@ -111,7 +110,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 판정 = Literal["위반", "주의", "권고", "해당없음"]
-규칙구분 = Literal["regulation", "practice"]
+규칙구분 = Literal["regulation", "domain"]
 입력출처 = Literal["교사직접", "외부LLM", "자체생성"]
 
 
@@ -173,8 +172,8 @@ Chroma (collection="regulations")
 ```
 data/domain/*.md (03 제외)
    ↓  절(`##`) 단위로 자른다
-   ↓  구분을 practice 로 표시한다
-Chroma (collection="practices")
+   ↓  구분을 domain 으로 표시한다
+Chroma (collection="domain")
 ```
 
 관습 규칙은 **조항 번호를 달지 않는다.** 출처는 사람과 날짜다 (교사A, 2026-08-27).

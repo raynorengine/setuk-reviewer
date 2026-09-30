@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 판정 = Literal["위반", "주의", "권고", "해당없음"]
-규칙구분 = Literal["regulation", "practice"]
+규칙구분 = Literal["regulation", "domain"]
 입력출처 = Literal["교사직접", "외부LLM", "자체생성"]
 
 
